@@ -1,109 +1,131 @@
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import {
-    onChangeText, text
-} from 'react-native';
+import { useState, useEffect } from "react";
+import { getContatos } from "../functions/getContatos";
+import api from "../services/api";
 
-function CadastroContatoScreen({navigation}){
-  return(
+function CadastroContatoScreen({ navigation }) {
+  const [dados, setDados] = useState({
+    nome: '',
+    email: '',
+    telefone: '',
+  })
+  const [loading, setLoading] = useState(false);
+  const [erro, setErro] = useState(false);
+
+  useEffect(() => {
+    console.log(dados);
+  }, [dados]);
+
+  const EnviaDados = () => {
+    api.post('/contatos', dados)
+      .then(res => {
+        getContatos(setDados, setLoading, setErro);
+        console.log(dados);
+        navigation.navigate('ListaContato');
+      })
+      .catch(e => console.log(e))
+  }
+  return (
     <View
-    style={{
-    }}>
+      style={{
+      }}>
       <StatusBar style="auto" />
-      
+
       <View
-      style={{
-        marginTop: 30,
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 15,
-        alignItems: 'left',
-        gap:3,
-      }}>
-        <Text
         style={{
-          fontSize:16,
-          textAlign:'left',
-          fontWeight:'600'
+          marginTop: 30,
+          marginLeft: 30,
+          marginRight: 30,
+          marginBottom: 15,
+          alignItems: 'left',
+          gap: 3,
         }}>
+        <Text
+          style={{
+            fontSize: 16,
+            textAlign: 'left',
+            fontWeight: '600'
+          }}>
           Nome
-          </Text>
+        </Text>
         <TextInput
-        style={{
-          fontSize:14,
-          height: 50,
-          backgroundColor:'#00000018',
-          borderWidth:3,
-          borderRadius:10,
-          borderColor:'#0080ff',
-          fontWeight:500
-        }}
-        onChangeText={onChangeText}
-        value={text}
-        placeholder='Digite o nome do contato...'/>
+          style={{
+            fontSize: 14,
+            height: 50,
+            backgroundColor: '#00000018',
+            borderWidth: 3,
+            borderRadius: 10,
+            borderColor: '#0080ff',
+            fontWeight: 500
+          }}
+          onChangeText={(texto) => { setDados({ ...dados, nome: texto }) }}
+          value={dados.nome}
+          placeholder='Digite o nome do contato...' />
       </View>
-      
+
       <View
-      style={{
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 15,
-        alignItems: 'left',
-        gap:3,
-      }}>
-        <Text
         style={{
-          fontSize:16,
-          textAlign:'left',
-          fontWeight:'600'
+          marginLeft: 30,
+          marginRight: 30,
+          marginBottom: 15,
+          alignItems: 'left',
+          gap: 3,
         }}>
+        <Text
+          style={{
+            fontSize: 16,
+            textAlign: 'left',
+            fontWeight: '600'
+          }}>
           Email
-          </Text>
+        </Text>
         <TextInput
-        style={{
-          fontSize:14,
-          height: 50,
-          backgroundColor:'#00000018',
-          borderWidth:3,
-          borderRadius:10,
-          borderColor:'#0080ff',
-          fontWeight:500
-        }}
-        onChangeText={onChangeText}
-        value={text}
-        placeholder='Digite o Email do contato...'/>
+          style={{
+            fontSize: 14,
+            height: 50,
+            backgroundColor: '#00000018',
+            borderWidth: 3,
+            borderRadius: 10,
+            borderColor: '#0080ff',
+            fontWeight: 500
+          }}
+          onChangeText={(texto) => { setDados({ ...dados, email: texto }) }}
+          value={dados.email}
+          placeholder='Digite o Email do contato...' />
       </View>
 
 
       <View
-      style={{
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 15,
-        alignItems: 'left',
-        gap:3,
-      }}>
-        <Text
         style={{
-          fontSize:16,
-          textAlign:'left',
-          fontWeight:'600'
+          marginLeft: 30,
+          marginRight: 30,
+          marginBottom: 15,
+          alignItems: 'left',
+          gap: 3,
         }}>
+        <Text
+          style={{
+            fontSize: 16,
+            textAlign: 'left',
+            fontWeight: '600'
+          }}>
           Telefone
-          </Text>
+        </Text>
         <TextInput
-        style={{
-          fontSize:14,
-          height: 50,
-          backgroundColor:'#00000018',
-          borderWidth:3,
-          borderRadius:10,
-          borderColor:'#0080ff'
-        }}
-        onChangeText={onChangeText}
-        value={text}
-        placeholder='Digite o telefone do contato...'/>
+          style={{
+            fontSize: 14,
+            height: 50,
+            backgroundColor: '#00000018',
+            borderWidth: 3,
+            borderRadius: 10,
+            borderColor: '#0080ff',
+            fontWeight: 500
+          }}
+          onChangeText={(texto) => { setDados({ ...dados, telefone: texto }) }}
+          value={dados.telefone}
+          placeholder='Digite o telefone do contato...' />
       </View>
 
       <View
@@ -116,25 +138,23 @@ function CadastroContatoScreen({navigation}){
         }}>
         <TouchableOpacity
           style={{
-            backgroundColor:'#0080ff',
-            borderRadius:10,
-            padding:10,
+            backgroundColor: '#0080ff',
+            borderRadius: 10,
+            padding: 10,
           }}
-          onPress={() => {
-            navigation.navigate('ListaContato');
-          }}
+          onPress={EnviaDados}
         >
           <Text style={{
-            color:'white',
-            textAlign:'center',
-            fontSize:16,
-            fontWeight:'600'
+            color: 'white',
+            textAlign: 'center',
+            fontSize: 16,
+            fontWeight: '600'
           }}>
             Cadastrar
           </Text>
         </TouchableOpacity>
       </View>
-      
+
     </View>
   );
 }
