@@ -1,15 +1,15 @@
 {
-  "name": "mobileapp",
+  "name": "appreact",
   "version": "1.0.0",
   "private": true,
   "description": "",
-  "homepage": "https://github.com/guiimanuel/mobileapp#readme",
+  "homepage": "https://github.com/guiimanuel/appreact#readme",
   "bugs": {
-    "url": "https://github.com/guiimanuel/mobileapp/issues"
+    "url": "https://github.com/guiimanuel/appreact/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/guiimanuel/mobileapp.git"
+    "url": "git+https://github.com/guiimanuel/appreact.git"
   },
   "license": "ISC",
   "author": "",
