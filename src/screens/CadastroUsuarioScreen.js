@@ -1,35 +1,36 @@
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import api from '../services/api';
-import { getUsuarios } from '../functions/getUsuarios';
 
 function CadastroUsuarioScreen({ navigation }) {
-  const [dados, setDados] = useState({
-    nome: '',
-    cpf: '',
-    email: '',
-    senha: '',
-  })
-  const [loading, setLoading] = useState(false);
-  const [erro, setErro] = useState(false);
+  const [id, setId] = useState('');
+  const [nome, setNome] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const Cadastrar = async () => {
+    try {
+      const usuario = {
+        nome,
+        cpf,
+        email,
+        senha
+      }
+      await api.post('/usuarios', usuario)
 
-  useEffect(() => {
-    console.log(dados);
-  }, [dados]);
-
-  const EnviaDados = () => {
-    api.post('/usuarios', dados)
-      .then(res => {
-        getUsuarios(setDados, setLoading, setErro);
-        console.log(dados);
-        navigation.navigate('Login');
-      })
-      .catch(e => console.log(e))
+      alert('Usuário cadastrado com sucesso!');
+      console.log(usuario);
+      navigation.goBack();
+    } catch (e) {
+      console.log(e);
+      alert('Erro ao cadastrar usuário');
+    }
   }
+
   return (
-    <View> 
+    <View>
       <StatusBar style="auto" />
 
       <View
@@ -59,8 +60,8 @@ function CadastroUsuarioScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => setDados({ ...dados, nome: texto })}
-          value={dados.nome}
+          value={nome}
+          onChangeText={setNome}
           placeholder='Digite seu nome...' />
       </View>
 
@@ -90,8 +91,8 @@ function CadastroUsuarioScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, cpf: texto }) }}
-          value={dados.cpf}
+          value={cpf}
+          onChangeText={setCpf}
           placeholder='Digite seu CPF...' />
       </View>
 
@@ -121,8 +122,8 @@ function CadastroUsuarioScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, email: texto }) }}
-          value={dados.email}
+          value={email}
+          onChangeText={setEmail}
           placeholder='Digite seu email...' />
       </View>
 
@@ -152,8 +153,8 @@ function CadastroUsuarioScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, senha: texto }) }}
-          value={dados.senha}
+          value={senha}
+          onChangeText={setSenha}
           placeholder='Digite sua senha...' />
       </View>
 
@@ -171,7 +172,7 @@ function CadastroUsuarioScreen({ navigation }) {
             borderRadius: 10,
             padding: 10
           }}
-          onPress={EnviaDados}
+          onPress={Cadastrar}
         >
           <Text style={{
             color: 'white',

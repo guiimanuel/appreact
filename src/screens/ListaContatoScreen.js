@@ -7,19 +7,16 @@ import api from '../services/api';
 
 function ListaContatoScreen({ navigation }) {
 
-  const [dados, setDados] = useState({ contatos: [] });
-  const [erro, setErro] = useState(false);
-
-  useEffect(() => {
-    api.get('/contatos')
-      .then(res => {
-        setDados(d => ({ ...d, contatos: res.data }));
+    const[contatos, setContatos]=useState([]);
+    useEffect(() => {
+        api.get('/contatos')
+        .then(res => {
+            setContatos(res.data);
+        })
+        .catch(e => {
+        console.log('Falha ao buscar contatos:', e);
       })
-      .catch(erro => {
-        console.log('Falha ao carregar contatos:', erro);
-        setErro(true)
-      })
-  }, []);
+  }, [contatos]);
 
   const renderContato = ({ item }) => (
     <TouchableOpacity
@@ -32,7 +29,7 @@ function ListaContatoScreen({ navigation }) {
         padding: 10,
       }}
       onPress={() => {
-        navigation.navigate('AlteracaoContato', { id: item.id, nome: item.nome, telefone: item.telefone });
+        navigation.navigate('AlteracaoContato', { contatos: item });
       }}
     >
       <Image
@@ -59,7 +56,7 @@ function ListaContatoScreen({ navigation }) {
 
       {/*Lista*/}
       <FlatList
-        data={dados.contatos}
+        data={contatos}
         renderItem={renderContato}
         keyExtractor={item => item.id.toString()}
       />

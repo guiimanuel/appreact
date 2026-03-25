@@ -1,44 +1,37 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import api from '../services/api';
 
 
 
 function LoginScreen({ navigation }) {
-
-  const [dados, setDados] = useState({ usuarios: [], email: '', senha: '' });
-  const [erro, setErro] = useState(false);
-
-  useEffect(() => {
-    api.get('/usuarios')
-      .then(res => setDados(d => ({ ...d, usuarios: res.data })))
-      .catch(erro => {
-        console.log('Falha ao carregar usuários:', erro);
-        setErro(true);
-      });
-  }, []);
-
-  const BuscaDados = () => {
-    if (!dados.email || !dados.senha) {
-      alert('Email ou senha incorretos');
-      setErro(true);
-      return;
-    }
-
-    const usuario = dados.usuarios.find(u => u.email === dados.email && u.senha === dados.senha);
-    if (usuario) {
-      navigation.navigate('ListaContato');
-    } else {
-      alert('Email ou senha incorretos');
-      setErro(true);
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  
+  async function Logar(){
+    try {
+      if (!email || !senha) {
+        alert('Preencha o email e a senha');
+        return;
+      }
+      api.get(`/usuarios?email=${email}&senha=${senha}`)
+        .then(function (res) {
+          if (res.data.length > 0) {
+            navigation.navigate('ListaContato');
+          } else {
+            alert('Email ou senha incorretos');
+          }
+        }).catch(function (e) {
+          console.log(e);
+          alert('Erro na conexao da API');
+        });
+    } catch (e) {
+      console.log('Erro ao logar:', e.message);
+      alert('Erro', 'Não foi possivel conectar à API');
     }
   }
-
-  useEffect(() => {
-    console.log(dados);
-  }, []);
 
   return (
     <View>
@@ -103,8 +96,9 @@ function LoginScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados(d => ({ ...d, email: texto })) }}
-          value={dados.email}
+          keyboardType='email-address'
+          value={email}
+          onChangeText={setEmail}
           placeholder='Digite seu email...' />
       </View>
 
@@ -136,10 +130,10 @@ function LoginScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados(d => ({ ...d, senha: texto })) }}
-          value={dados.senha}
-          placeholder='Digite sua senha...'
           secureTextEntry
+          value={senha}
+          onChangeText={setSenha}
+          placeholder='Digite sua senha...'
         />
       </View>
 
@@ -158,7 +152,7 @@ function LoginScreen({ navigation }) {
             borderRadius: 10,
             padding: 10,
           }}
-          onPress={() => { BuscaDados() }}>
+          onPress={Logar}>
 
           <Text style={{
             color: 'white',

@@ -1,31 +1,34 @@
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { useState, useEffect } from "react";
-import { getContatos } from "../functions/getContatos";
+import { useState } from "react";
 import api from "../services/api";
 
 function CadastroContatoScreen({ navigation }) {
-  const [dados, setDados] = useState({
-    nome: '',
-    email: '',
-    telefone: '',
-  })
-  const [loading, setLoading] = useState(false);
-  const [erro, setErro] = useState(false);
+  
+  const[usuario_id, setUsuario_id] = useState(1);
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [email, setEmail] = useState('');
 
-  useEffect(() => {
-    console.log(dados);
-  }, [dados]);
+  const Cadastrar = async () => {
+    try{
+      const contato = {
+        usuario_id,
+        nome,
+        telefone,
+        email
+      };
 
-  const EnviaDados = () => {
-    api.post('/contatos', dados)
-      .then(res => {
-        getContatos(setDados, setLoading, setErro);
-        console.log(dados);
-        navigation.navigate('ListaContato');
-      })
-      .catch(e => console.log(e))
+      await api.post('/contatos', contato);
+
+      alert('Contato cadastrado com sucesso!');
+      console.log(contato);
+      navigation.goBack();
+    }catch(e){
+      console.log(e);
+      alert('Erro ao cadastrar contato');
+    }
   }
   return (
     <View
@@ -60,8 +63,8 @@ function CadastroContatoScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, nome: texto }) }}
-          value={dados.nome}
+          onChangeText={setNome}
+          value={nome}
           placeholder='Digite o nome do contato...' />
       </View>
 
@@ -91,8 +94,8 @@ function CadastroContatoScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, email: texto }) }}
-          value={dados.email}
+          onChangeText={setEmail}
+          value={email}
           placeholder='Digite o Email do contato...' />
       </View>
 
@@ -123,8 +126,8 @@ function CadastroContatoScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, telefone: texto }) }}
-          value={dados.telefone}
+          onChangeText={setTelefone}
+          value={telefone}
           placeholder='Digite o telefone do contato...' />
       </View>
 
@@ -142,7 +145,7 @@ function CadastroContatoScreen({ navigation }) {
             borderRadius: 10,
             padding: 10,
           }}
-          onPress={EnviaDados}
+          onPress={Cadastrar}
         >
           <Text style={{
             color: 'white',

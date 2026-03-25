@@ -4,43 +4,48 @@ import * as React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import api from "../services/api";
-import { getContatos } from "../functions/getContatos";
 
-function AlteracaoContatoScreen({ navigation }) {
-  const route = useRoute();
-  const { id } = route.params;
-  const [dados, setDados] = useState({ nome: '', email: '', telefone: '' });
-  const [erro, setErro] = useState(false);
-  const [loading, setLoading] = useState(false);
+function AlteracaoContatoScreen({ route, navigation }) {
+
+  const { contatos } = route.params;
+
+  const [id, setId] = useState(contatos.id);
+  const [nome, setNome] = useState(contatos.nome);
+  const [telefone, setTelefone] = useState(contatos.telefone);
+  const [email, setEmail] = useState(contatos.email);
+
   useEffect(() => {
-    api.get('/contatos/' + id)
-      .then(res => setDados({ nome: res.data.nome, email: res.data.email, telefone: res.data.telefone }))
-      .catch(erro => {
-        console.log('Falha ao carregar contato:', erro);
-        setErro(true);
-      });
-  }, [id])
+    const carregarContato = async () => {
+      try {
+        const res = await api.get(`/contatos/${id}`);
+        setNome(res.data.nome);
+        setTelefone(res.data.telefone);
+        setEmail(res.data.email);
+      } catch (e) {
+        alert('Erro', 'Erro ao carregar contato');
+        console.log(e);
+      }
+    };
+    carregarContato();
+  }, [id]);
 
-  const EnviaDados = () => {
-    api.put('/contatos/' + id, dados)
-      .then(res => {
-        getContatos(setDados, setLoading, setErro);
-        console.log(dados);
-        navigation.navigate('ListaContato');
-      })
-      .catch(e => console.log('Erro ao atualizar:', e))
+  const AlteraContato = async () => {
+    try {
+      await api.put(`/contatos/${id}`, { nome, telefone, email });
+      navigation.goBack();
+    } catch (e) {
+      console.log("Erro ao atualizar:", e);
+    }
+  };
+
+  const ExcluiContato = async () => {
+    try {
+      await api.delete(`/contatos/${id}`);
+      navigation.goBack();
+    } catch (e) {
+      console.log('Erro ao excluir:', e)
+    }
   }
-
-  const ExcluiDados = () => {
-    api.delete('/contatos/' + id)
-      .then(res => {
-        getContatos(setDados, setLoading, setErro);
-        console.log(dados);
-        navigation.navigate('ListaContato');
-      })
-      .catch(e => console.log('Erro ao excluir:', e))
-  }
-
   return (
     <View>
       <StatusBar style="auto" />
@@ -72,8 +77,8 @@ function AlteracaoContatoScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, nome: texto }) }}
-          value={dados.nome}
+          onChangeText={setNome}
+          value={nome}
           placeholder='Digite o nome do contato...' />
       </View>
 
@@ -103,8 +108,8 @@ function AlteracaoContatoScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, email: texto }) }}
-          value={dados.email}
+          onChangeText={setEmail}
+          value={email}
           placeholder='Digite o Email do contato...' />
       </View>
       <View
@@ -133,8 +138,8 @@ function AlteracaoContatoScreen({ navigation }) {
             borderColor: '#0080ff',
             fontWeight: 500
           }}
-          onChangeText={(texto) => { setDados({ ...dados, telefone: texto }) }}
-          value={dados.telefone}
+          onChangeText={setTelefone}
+          value={telefone}
           placeholder='Digite o telefone do contato...' />
       </View>
 
@@ -153,7 +158,7 @@ function AlteracaoContatoScreen({ navigation }) {
             padding: 10,
           }}
           onPress={() => {
-            EnviaDados();
+            AlteraContato();
           }}
         >
           <Text style={{
@@ -181,7 +186,7 @@ function AlteracaoContatoScreen({ navigation }) {
             padding: 10,
           }}
           onPress={() => {
-            ExcluiDados();
+            ExcluiContato();
           }}
         >
           <Text style={{

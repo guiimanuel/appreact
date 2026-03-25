@@ -1,38 +1,27 @@
 {
   "usuarios": [
     {
-      "id": "5902",
+      "id": "d0ad",
       "nome": "Guilherme Manuel",
-      "cpf": "704.559.684-70",
+      "cpf": "13274562322",
       "email": "guilhermemanuel445@gmail.com",
       "senha": "guilherme0708"
     },
     {
-      "id": "4794",
-      "nome": "gabriel",
-      "cpf": "127262527",
-      "email": "gabriel@gmail.com",
+      "id": "0af1",
+      "nome": "Carlos Brazil",
+      "cpf": "3242345235",
+      "email": "carlos@gmail.com",
       "senha": "123456"
     }
   ],
   "contatos": [
     {
-      "id": "61da",
-      "nome": "Guilherme Manuel",
-      "email": "guilhermemanuel445@gmail.com",
-      "telefone": "81996167276"
-    },
-    {
-      "nome": "Mario",
-      "email": "maria@gmail.com",
-      "telefone": "81996167276",
-      "id": "cd0d"
-    },
-    {
-      "id": "5a6d",
-      "nome": "Julio",
-      "email": "julio@gmail.com",
-      "telefone": "812672621"
+      "id": "024b",
+      "usuario_id": 1,
+      "nome": "Rodrigues Manuel",
+      "telefone": "81991258743",
+      "email": "rodrigues@gmail.com"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
