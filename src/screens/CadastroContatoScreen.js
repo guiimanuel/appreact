@@ -4,17 +4,21 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import api from "../services/api";
 
-function CadastroContatoScreen({ navigation }) {
+function CadastroContatoScreen({ navigation, route }) {
   
-  const[usuario_id, setUsuario_id] = useState(1);
+  const usuario = route?.params?.usuario;
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
 
   const Cadastrar = async () => {
+    if (!usuario?.id) {
+      alert('Usuário não autenticado. Faça login novamente.');
+      return;
+    }
     try{
       const contato = {
-        usuario_id,
+        usuario_id: usuario.id,
         nome,
         telefone,
         email
@@ -24,7 +28,7 @@ function CadastroContatoScreen({ navigation }) {
 
       alert('Contato cadastrado com sucesso!');
       console.log(contato);
-      navigation.goBack();
+      navigation.navigate('ListaContato', { usuario });
     }catch(e){
       console.log(e);
       alert('Erro ao cadastrar contato');

@@ -32,12 +32,12 @@ return (
 <Stack.Screen 
   name="ListaContato"
   component={ListaContatoScreen}
-  options={({navigation}) => ({
+  options={({navigation, route}) => ({
     title: 'Lista de Contatos', 
     headerTitleAlign: 'center',
     headerRight: () => (
       <TouchableOpacity
-        onPress={() => navigation.navigate('CadastroContato')}>
+        onPress={() => navigation.navigate('CadastroContato', { usuario: route.params?.usuario })}>
         <Text style={{color: '#ffffff', fontSize: 32, marginRight: 15}}>+</Text>
       </TouchableOpacity>
     ),

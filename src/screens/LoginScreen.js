@@ -19,7 +19,8 @@ function LoginScreen({ navigation }) {
       api.get(`/usuarios?email=${email}&senha=${senha}`)
         .then(function (res) {
           if (res.data.length > 0) {
-            navigation.navigate('ListaContato');
+            const usuario = res.data[0];
+            navigation.navigate('ListaContato', { usuario });
           } else {
             alert('Email ou senha incorretos');
           }

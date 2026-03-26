@@ -1,27 +1,41 @@
 {
   "usuarios": [
     {
-      "id": "d0ad",
-      "nome": "Guilherme Manuel",
-      "cpf": "13274562322",
-      "email": "guilhermemanuel445@gmail.com",
-      "senha": "guilherme0708"
+      "id": "a77a",
+      "nome": "gui",
+      "cpf": "186312674",
+      "email": "gui@gmail.com",
+      "senha": "gui123"
     },
     {
-      "id": "0af1",
-      "nome": "Carlos Brazil",
-      "cpf": "3242345235",
-      "email": "carlos@gmail.com",
-      "senha": "123456"
+      "id": "617d",
+      "nome": "azul",
+      "cpf": "12835124575",
+      "email": "azul@gmail.com",
+      "senha": "azul123"
     }
   ],
   "contatos": [
     {
-      "id": "024b",
-      "usuario_id": 1,
-      "nome": "Rodrigues Manuel",
-      "telefone": "81991258743",
-      "email": "rodrigues@gmail.com"
+      "id": "d6ca",
+      "usuario_id": "a77a",
+      "nome": "carlos",
+      "telefone": "172361253",
+      "email": "carlos@gmail.com"
+    },
+    {
+      "nome": "gui2",
+      "telefone": "123413214",
+      "email": "gui@gmail.com",
+      "usuario_id": "617d",
+      "id": "bfa6"
+    },
+    {
+      "id": "6c33",
+      "usuario_id": "617d",
+      "nome": "gui3@gmail.com",
+      "telefone": "12341245",
+      "email": "gui3@gmail.com"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

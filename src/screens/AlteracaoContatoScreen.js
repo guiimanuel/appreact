@@ -7,7 +7,7 @@ import api from "../services/api";
 
 function AlteracaoContatoScreen({ route, navigation }) {
 
-  const { contatos } = route.params;
+  const { contatos, usuario } = route.params;
 
   const [id, setId] = useState(contatos.id);
   const [nome, setNome] = useState(contatos.nome);
@@ -30,20 +30,34 @@ function AlteracaoContatoScreen({ route, navigation }) {
   }, [id]);
 
   const AlteraContato = async () => {
+    if (contatos.usuario_id !== usuario.id) {
+      alert('Você não tem permissão para editar este contato.');
+      return;
+    }
     try {
-      await api.put(`/contatos/${id}`, { nome, telefone, email });
-      navigation.goBack();
+      await api.put(`/contatos/${id}`, { 
+        nome, 
+        telefone, 
+        email,
+        usuario_id: usuario.id 
+      });
+      alert('Contato alterado com sucesso!');
+      navigation.navigate('ListaContato', { usuario });
     } catch (e) {
       console.log("Erro ao atualizar:", e);
     }
   };
 
   const ExcluiContato = async () => {
+    if (contatos.usuario_id !== usuario.id) {
+      alert('Você não tem permissão para excluir este contato.');
+      return;
+    }
     try {
       await api.delete(`/contatos/${id}`);
-      navigation.goBack();
+      navigation.navigate('ListaContato', { usuario });
     } catch (e) {
-      console.log('Erro ao excluir:', e)
+      console.log("Erro ao excluir:", e);
     }
   }
   return (

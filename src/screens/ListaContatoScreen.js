@@ -5,18 +5,19 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 
 
-function ListaContatoScreen({ navigation }) {
+function ListaContatoScreen({ navigation, route }) {
 
-    const[contatos, setContatos]=useState([]);
+    const usuario = route?.params?.usuario;
+    const [contatos, setContatos] = useState([]);
     useEffect(() => {
-        api.get('/contatos')
+        api.get(`/contatos?usuario_id=${usuario.id}`)
         .then(res => {
             setContatos(res.data);
         })
         .catch(e => {
         console.log('Falha ao buscar contatos:', e);
       })
-  }, [contatos]);
+  }, [usuario]);
 
   const renderContato = ({ item }) => (
     <TouchableOpacity
@@ -29,7 +30,7 @@ function ListaContatoScreen({ navigation }) {
         padding: 10,
       }}
       onPress={() => {
-        navigation.navigate('AlteracaoContato', { contatos: item });
+        navigation.navigate('AlteracaoContato', { contatos: item, usuario });
       }}
     >
       <Image
