@@ -1,5 +1,5 @@
-# Aplicacao simples em desenvolvimento com react native.
-Conexao de apis com axios (json-server), navegacao entre telas, CRUD. <br>
+# Aplicação CRUD simples desenvolvida com ReactNative.
+Conexão de apis com axios (json-server), navegação entre telas, CRUD. <br>
 CRUD usuários.<br>
 CRUD contatos.<br>
-React native, JavaScript.
+React native.
